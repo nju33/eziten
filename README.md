@@ -1,4 +1,5 @@
-# eziten
+<h1><img src="https://github.com/nju33/eziten/blob/master/app/icons/icon.iconset/icon_32x32.png?raw=true" width="30
+">&nbsp;Eziten</h1>
 
 > An electron-vue project
 
