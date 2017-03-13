@@ -1,6 +1,7 @@
 'use strict'
 
-import {app, BrowserWindow, screen, Tray} from 'electron';
+import {app, BrowserWindow, screen, Tray, ipcMain} from 'electron';
+import darkMode from 'dark-mode';
 
 let mainWindow = null;
 let mainTray = null;
@@ -70,3 +71,9 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
+ipcMain.on('get-mode:req', ({sender}) => {
+  darkMode.isDark().then(bool => {
+    sender.send('get-mode:res', {darkMode: bool})
+  }).catch(err => console.log(err));
+});

@@ -17,7 +17,7 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: #222;
+  background: #fafafa;
 }
 
 ul {

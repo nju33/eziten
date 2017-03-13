@@ -50,6 +50,7 @@
     "webpack-dev-server": "^2.3.0"
   },
   "dependencies": {
+    "dark-mode": "^3.0.0",
     "node-emoji": "^1.5.1"
   }
 }

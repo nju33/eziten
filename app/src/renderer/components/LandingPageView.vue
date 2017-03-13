@@ -23,7 +23,8 @@
     data() {
       return {
         emoji,
-        names: emojiNames
+        names: emojiNames,
+        mode: 'light',
       }
     },
     methods: {
@@ -34,6 +35,15 @@
         }
         this.$electron.clipboard.writeText(this.emoji[name]);
       }
+    },
+    mounted() {
+      this.$electron.ipcRenderer.send('get-mode:req');
+      this.$electron.ipcRenderer.on('get-mode:res', (ev, {darkMode}) => {
+        if (darkMode) {
+          this.mode = 'dark';
+          document.body.style.background = '#232323';
+        }
+      });
     }
   }
 </script>
