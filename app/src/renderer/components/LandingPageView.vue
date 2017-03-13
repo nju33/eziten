@@ -2,7 +2,7 @@
   <div class="container">
     <ul class="list">
       <li class="item" v-if="emoji[name]" v-for="name in names">
-        <a class="moji" role="button" v-text="emoji[name]" @click.prevent="copy($event, name)"></a role="button">
+        <a class="moji" :title="name" role="button" v-text="emoji[name]" @click.prevent="copy($event, name)"></a role="button">
       </li>
     </ul>
   </div>
