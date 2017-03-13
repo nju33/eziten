@@ -76,8 +76,35 @@
 }
 
 .moji {
+  display: inline-block;
   transform: scale(0.8);
   display: inline-block;
   transform-origin: left top;
+  user-select: none;
+  position: relative;
+  transition: .2s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  cursor: default;
+}
+
+.moji:before {
+  content: '';
+  position: absolute;
+  left: -.1em;
+  top: 0;
+  z-index: -1;
+  width: 1.4em;
+  height: 1.4em;
+  background: transparent;
+  transition: .2s cubic-bezier(0.455, 0.03, 0.515, 0.955) .1s;
+}
+
+.moji:hover:before {
+  transition: .2s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  background: rgba(0, 105, 217, .6);
+}
+
+.moji:active:before {
+  transition: none;
+  background: #0069d9;
 }
 </style>
