@@ -4,6 +4,7 @@
   "description": "An electron-vue project",
   "main": "./dist/main.js",
   "dependencies": {
+    "dark-mode": "^3.0.0",
     "vue": "^2.1.10",
     "vue-electron": "^1.0.6"
   },
