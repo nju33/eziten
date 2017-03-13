@@ -29,11 +29,13 @@ function createWindow () {
 
   mainWindow.loadURL(winURL)
 
-  mainWindow.on('blur', () => {
-    if (mainWindow.isVisible()) {
-      mainWindow.hide();
-    }
-  });
+  if (process.env.NODE_ENV === 'production') {
+    mainWindow.on('blur', () => {
+      if (mainWindow.isVisible()) {
+        mainWindow.hide();
+      }
+    });
+  }
 
   mainWindow.on('closed', () => {
     mainWindow = null
