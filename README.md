@@ -41,4 +41,6 @@ This project was generated from [electron-vue](https://github.com/SimulatedGREG/
 
 ## Lisence
 
-Copyright (c) 2017 nju33 nju33.ki@gmail.com
+The MIT License (MIT)
+
+Copyright (c) 2016 nju33 <nju33.ki@gmail.com>
