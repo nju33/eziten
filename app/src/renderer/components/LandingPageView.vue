@@ -34,6 +34,8 @@
           return;
         }
         this.$electron.clipboard.writeText(this.emoji[name]);
+
+        this.$electron.ipcRenderer.send('hide');
       }
     },
     mounted() {

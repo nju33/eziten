@@ -93,3 +93,11 @@ ipcMain.on('get-mode:req', ({sender}) => {
     sender.send('get-mode:res', {darkMode: bool})
   }).catch(err => console.log(err));
 });
+
+ipcMain.on('hide', () => {
+  if (mainWindow === null || !mainWindow.isVisible()) {
+    return;
+  }
+
+  mainWindow.hide();
+});
