@@ -1,6 +1,7 @@
 'use strict'
 
-import {app, BrowserWindow, screen, Tray, ipcMain} from 'electron';
+import {app, BrowserWindow, screen, Tray, ipcMain,
+        globalShortcut} from 'electron';
 import darkMode from 'dark-mode';
 
 let mainWindow = null;
@@ -59,6 +60,15 @@ function createTray() {
 
 app.on('ready', () => {
   createTray();
+  globalShortcut.register('CommandOrControl+Alt+E', () => {
+    if (mainWindow === null) {
+      createWindow();
+    } else if (mainWindow.isVisible()) {
+      mainWindow.hide();
+    } else if (!mainWindow.isVisible()) {
+      mainWindow.show();
+    }
+  });
   app.dock.hide();
 })
 
@@ -72,6 +82,10 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow()
   }
+})
+
+app.on('will-quit', () => {
+  globalShortcut.unregister('CommandOrControl+Alt+E');
 })
 
 ipcMain.on('get-mode:req', ({sender}) => {
