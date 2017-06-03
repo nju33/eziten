@@ -51,6 +51,7 @@
   },
   "dependencies": {
     "dark-mode": "^3.0.0",
+    "electron-json-storage": "^3.0.5",
     "lodash": "^4.17.4",
     "node-emoji": "^1.5.1"
   }

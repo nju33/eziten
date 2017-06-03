@@ -3,6 +3,7 @@
 import {app, BrowserWindow, screen, Tray, ipcMain,
         globalShortcut} from 'electron';
 import darkMode from 'dark-mode';
+import storage from 'electron-json-storage';
 
 let mainWindow = null;
 let mainTray = null;
@@ -41,6 +42,7 @@ function createWindow () {
   mainWindow.on('closed', () => {
     mainWindow = null
   })
+  return mainWindow;
 }
 
 function createTray() {
@@ -60,16 +62,16 @@ function createTray() {
 
 app.on('ready', () => {
   createTray();
+  createWindow().hide();
+  app.dock.hide();
+
   globalShortcut.register('CommandOrControl+Alt+E', () => {
-    if (mainWindow === null) {
-      createWindow();
-    } else if (mainWindow.isVisible()) {
+    if (mainWindow.isVisible()) {
       mainWindow.hide();
     } else if (!mainWindow.isVisible()) {
       mainWindow.show();
     }
   });
-  app.dock.hide();
 })
 
 app.on('window-all-closed', () => {
@@ -92,6 +94,27 @@ ipcMain.on('get-mode:req', ({sender}) => {
   darkMode.isDark().then(bool => {
     sender.send('get-mode:res', {darkMode: bool})
   }).catch(err => console.log(err));
+});
+
+ipcMain.on('get-data:req', ({sender}) => {
+  storage.get('config', (err, data) => {
+    if (err !== null) {
+      console.log(err);
+    }
+
+    if (!('histories' in data)) {
+      data.histories = [];
+    }
+    sender.send('get-data:res', data);
+  });
+});
+
+ipcMain.on('set-data:req', (ev, data) => {
+  storage.set('config', data, err => {
+    if (err !== null) {
+      console.log(err);
+    }
+  })
 });
 
 ipcMain.on('hide', () => {

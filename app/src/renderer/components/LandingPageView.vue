@@ -49,6 +49,9 @@
           }
           return [name, ...arr];
         })(difference(this.histories, [name]))
+        this.$electron.ipcRenderer.send('set-data:req', {
+          histories: this.histories
+        });
       }
     },
     mounted() {
@@ -58,6 +61,10 @@
           this.mode = 'dark';
           document.body.style.background = '#232323';
         }
+      });
+      this.$electron.ipcRenderer.send('get-data:req');
+      this.$electron.ipcRenderer.on('get-data:res', (ev, data) => {
+        this.histories = data.histories;
       });
     }
   }
@@ -81,6 +88,7 @@
 }
 
 .history {
+  flex-direction: row;
   height: 1em;
   margin-bottom: -10px;
 }
