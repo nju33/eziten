@@ -1,7 +1,13 @@
-'use strict'
+'use strict';
 
-import {app, BrowserWindow, screen, Tray, ipcMain,
-        globalShortcut} from 'electron';
+import {
+  app,
+  BrowserWindow,
+  screen,
+  Tray,
+  ipcMain,
+  globalShortcut
+} from 'electron';
 import darkMode from 'dark-mode';
 import storage from 'electron-json-storage';
 
@@ -10,9 +16,9 @@ let mainTray = null;
 let trayWindow = null;
 const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:${require('../../../config').port}`
-  : `file://${__dirname}/index.html`
+  : `file://${__dirname}/index.html`;
 
-function createWindow () {
+function createWindow() {
   const {width} = screen.getPrimaryDisplay().workAreaSize;
   /**
    * Initial window options
@@ -27,9 +33,9 @@ function createWindow () {
     movable: false,
     fullscreenable: false,
     alwaysOnTop: process.env.NODE_ENV === 'production'
-  })
+  });
 
-  mainWindow.loadURL(winURL)
+  mainWindow.loadURL(winURL);
 
   if (process.env.NODE_ENV === 'production') {
     mainWindow.on('blur', () => {
@@ -40,8 +46,8 @@ function createWindow () {
   }
 
   mainWindow.on('closed', () => {
-    mainWindow = null
-  })
+    mainWindow = null;
+  });
   return mainWindow;
 }
 
@@ -72,28 +78,31 @@ app.on('ready', () => {
       mainWindow.show();
     }
   });
-})
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    app.quit()
+    app.quit();
   }
-})
+});
 
 app.on('activate', () => {
   if (mainWindow === null) {
-    createWindow()
+    createWindow();
   }
-})
+});
 
 app.on('will-quit', () => {
   globalShortcut.unregister('CommandOrControl+Alt+E');
-})
+});
 
 ipcMain.on('get-mode:req', ({sender}) => {
-  darkMode.isDark().then(bool => {
-    sender.send('get-mode:res', {darkMode: bool})
-  }).catch(err => console.log(err));
+  darkMode
+    .isDark()
+    .then(bool => {
+      sender.send('get-mode:res', {darkMode: bool});
+    })
+    .catch(err => console.log(err));
 });
 
 ipcMain.on('get-data:req', ({sender}) => {
@@ -114,7 +123,7 @@ ipcMain.on('set-data:req', (ev, data) => {
     if (err !== null) {
       console.log(err);
     }
-  })
+  });
 });
 
 ipcMain.on('hide', () => {
