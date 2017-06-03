@@ -1,5 +1,10 @@
 <template>
   <div class="container">
+    <ul class="history">
+      <li class="item" v-if="emoji[name]" v-for="name in histories">
+        <a class="moji" :title="name" role="button" v-text="emoji[name]" @click.prevent="copy($event, name)"></a role="button">
+      </li>
+    </ul>
     <ul class="list">
       <li class="item" v-if="emoji[name]" v-for="name in names">
         <a class="moji" :title="name" role="button" v-text="emoji[name]" @click.prevent="copy($event, name)"></a role="button">
@@ -9,9 +14,10 @@
 </template>
 
 <script>
+  import difference from 'lodash/difference';
+  import emoji from 'node-emoji/lib/emoji.json';
   import Links from './LandingPageView/Links'
   import Versions from './LandingPageView/Versions'
-  import emoji from 'node-emoji/lib/emoji.json';
   import emojiNames from './emoji-names';
 
   export default {
@@ -24,6 +30,7 @@
       return {
         emoji,
         names: emojiNames,
+        histories: [],
         mode: 'light',
       }
     },
@@ -34,8 +41,14 @@
           return;
         }
         this.$electron.clipboard.writeText(this.emoji[name]);
-
         this.$electron.ipcRenderer.send('hide');
+
+        this.histories = (arr => {
+          if (arr.length > 50) {
+            arr.pop();
+          }
+          return [name, ...arr];
+        })(difference(this.histories, [name]))
       }
     },
     mounted() {
@@ -53,17 +66,27 @@
 <style scoped>
 
 .container {
-  height: 4em;
+  height: calc(30px * 4);
   overflow: hidden;
 }
 
+.history,
 .list {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  height: 4em;
+  /*height: 4em;*/
   overflow: auto;
   padding-bottom: 20px;
+}
+
+.history {
+  height: 1em;
+  margin-bottom: -10px;
+}
+
+.list {
+  height: 4em;
 }
 
 .item {
@@ -71,10 +94,11 @@
   margin: .3em;
   height: .8em;
   line-height: 1.6;
+  margin-bottom: -1px;
 }
 
-.item {
-  margin-bottom: -1px;
+.history .item {
+  flex: none;
 }
 
 .moji {
